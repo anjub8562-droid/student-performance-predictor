@@ -1,19 +1,31 @@
 """
-student_app.py
+student-app.py
 ---------------
 Single-page Streamlit app that loads the trained RandomForest model
 (student_score_model.pkl) plus the saved scaler / encoders, takes student
-details as input, and predicts the exam score.
+details as input, and predicts the exam score. If student_score_model.pkl
+is not present in the repository (e.g., due to GitHub's 25 MB upload limit),
+it automatically trains and saves the model on startup using student_train.py.
 
 Run:
-    streamlit run student_app.py
+    streamlit run student-app.py
 """
 
+import subprocess
+import sys
+from pathlib import Path
 import joblib
 import pandas as pd
 import streamlit as st
 
-st.set_page_config(page_title="Student Exam Score Predictor", page_icon="🎓", layout="centered")
+st.set_page_config(
+    page_title="Student Exam Score Predictor",
+    page_icon="🎓",
+    layout="centered",
+)
+
+# Resolve the directory containing this script
+BASE_DIR = Path(__file__).resolve().parent
 
 
 # --------------------------------------------------------------------------
@@ -21,10 +33,31 @@ st.set_page_config(page_title="Student Exam Score Predictor", page_icon="🎓", 
 # --------------------------------------------------------------------------
 @st.cache_resource
 def load_artifacts():
-    model = joblib.load("student_score_model.pkl")
-    scaler = joblib.load("scaler.pkl")
-    encoders = joblib.load("encoders.pkl")
-    metadata = joblib.load("metadata.pkl")
+    model_path = BASE_DIR / "student_score_model.pkl"
+    train_script = BASE_DIR / "student_train.py"
+
+    # Train automatically if the >25MB model file couldn't be uploaded to GitHub
+    if not model_path.exists():
+        if not train_script.exists():
+            st.error("Both `student_score_model.pkl` and `student_train.py` are missing.")
+            st.stop()
+
+        with st.spinner("Training model on first startup... this takes ~15 seconds."):
+            result = subprocess.run(
+                [sys.executable, str(train_script)],
+                cwd=BASE_DIR,
+                capture_output=True,
+                text=True,
+            )
+            if result.returncode != 0:
+                st.error("Automatic model training failed. Error details:")
+                st.code(result.stderr or result.stdout)
+                st.stop()
+
+    model = joblib.load(BASE_DIR / "student_score_model.pkl")
+    scaler = joblib.load(BASE_DIR / "scaler.pkl")
+    encoders = joblib.load(BASE_DIR / "encoders.pkl")
+    metadata = joblib.load(BASE_DIR / "metadata.pkl")
     return model, scaler, encoders, metadata
 
 
