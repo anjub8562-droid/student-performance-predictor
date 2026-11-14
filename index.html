@@ -7,38 +7,74 @@
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
-    <div class="page-wrapper">
-      <header class="hero">
-        <div class="badge">Random Forest ML Model</div>
-        <h1>🎓 Student Exam Score Predictor</h1>
-        <p>
-          Adjust study habits and environmental factors to estimate final exam
-          performance.
-        </p>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-icon">🎓</span>
+          <div>
+            <h1>Exam Score Predictor</h1>
+            <p>Interactive Random Forest Performance Simulator</p>
+          </div>
+        </div>
+
+        <div class="presets">
+          <span class="preset-label">Try a preset:</span>
+          <button
+            type="button"
+            class="preset-btn active"
+            data-preset="balanced"
+          >
+            ⚖️ Balanced
+          </button>
+          <button type="button" class="preset-btn" data-preset="achiever">
+            🚀 High Achiever
+          </button>
+          <button type="button" class="preset-btn" data-preset="atrisk">
+            ⚠️ At-Risk
+          </button>
+        </div>
       </header>
 
-      <main class="card">
-        <form id="predictForm">
-          <section class="form-section">
-            <h2>📚 Study Habits</h2>
-            <div class="grid">
-              <div class="field">
-                <label for="Hours_Studied">Hours Studied / Week</label>
+      <div class="dashboard-grid">
+        <!-- LEFT: Interactive Controls -->
+        <form id="predictForm" class="controls-column">
+          <section class="glass-card">
+            <div class="card-header">
+              <span class="step-pill">01</span>
+              <div>
+                <h2>Study Habits &amp; Routine</h2>
+                <p>Drag sliders to simulate weekly academic effort</p>
+              </div>
+            </div>
+
+            <div class="slider-grid">
+              <div class="slider-field">
+                <div class="field-top">
+                  <label for="Hours_Studied">Hours Studied / Week</label>
+                  <span class="val-pill"
+                    ><span id="Hours_Studied_val">20</span> hrs</span
+                  >
+                </div>
                 <input
-                  type="number"
+                  type="range"
                   id="Hours_Studied"
                   name="Hours_Studied"
                   min="0"
                   max="50"
                   value="20"
-                  required
                 />
               </div>
 
-              <div class="field">
-                <label for="Attendance"
-                  >Attendance (<span id="attendanceVal">85</span>%)</label
-                >
+              <div class="slider-field">
+                <div class="field-top">
+                  <label for="Attendance">Class Attendance</label>
+                  <span class="val-pill"
+                    ><span id="Attendance_val">85</span>%</span
+                  >
+                </div>
                 <input
                   type="range"
                   id="Attendance"
@@ -49,66 +85,87 @@
                 />
               </div>
 
-              <div class="field">
-                <label for="Sleep_Hours">Sleep Hours / Night</label>
+              <div class="slider-field">
+                <div class="field-top">
+                  <label for="Previous_Scores">Previous Exam Score</label>
+                  <span class="val-pill"
+                    ><span id="Previous_Scores_val">70</span> / 100</span
+                  >
+                </div>
                 <input
-                  type="number"
-                  id="Sleep_Hours"
-                  name="Sleep_Hours"
-                  min="0"
-                  max="12"
-                  value="7"
-                  required
-                />
-              </div>
-
-              <div class="field">
-                <label for="Previous_Scores">Previous Exam Score</label>
-                <input
-                  type="number"
+                  type="range"
                   id="Previous_Scores"
                   name="Previous_Scores"
                   min="0"
                   max="100"
                   value="70"
-                  required
                 />
               </div>
 
-              <div class="field">
-                <label for="Tutoring_Sessions">Tutoring Sessions / Month</label>
+              <div class="slider-field">
+                <div class="field-top">
+                  <label for="Sleep_Hours">Sleep / Night</label>
+                  <span class="val-pill"
+                    ><span id="Sleep_Hours_val">7</span> hrs</span
+                  >
+                </div>
                 <input
-                  type="number"
+                  type="range"
+                  id="Sleep_Hours"
+                  name="Sleep_Hours"
+                  min="0"
+                  max="12"
+                  value="7"
+                />
+              </div>
+
+              <div class="slider-field">
+                <div class="field-top">
+                  <label for="Tutoring_Sessions">Tutoring / Month</label>
+                  <span class="val-pill"
+                    ><span id="Tutoring_Sessions_val">1</span> sessions</span
+                  >
+                </div>
+                <input
+                  type="range"
                   id="Tutoring_Sessions"
                   name="Tutoring_Sessions"
                   min="0"
                   max="10"
                   value="1"
-                  required
                 />
               </div>
 
-              <div class="field">
-                <label for="Physical_Activity"
-                  >Physical Activity (hrs/wk)</label
-                >
+              <div class="slider-field">
+                <div class="field-top">
+                  <label for="Physical_Activity">Physical Activity</label>
+                  <span class="val-pill"
+                    ><span id="Physical_Activity_val">3</span> hrs/wk</span
+                  >
+                </div>
                 <input
-                  type="number"
+                  type="range"
                   id="Physical_Activity"
                   name="Physical_Activity"
                   min="0"
                   max="10"
                   value="3"
-                  required
                 />
               </div>
             </div>
           </section>
 
-          <section class="form-section">
-            <h2>👨‍👩‍👧 Background &amp; Environment</h2>
-            <div class="grid">
-              <div class="field">
+          <section class="glass-card">
+            <div class="card-header">
+              <span class="step-pill">02</span>
+              <div>
+                <h2>Background &amp; Environment</h2>
+                <p>Select support systems, school context, and demographics</p>
+              </div>
+            </div>
+
+            <div class="select-grid">
+              <div class="select-field">
                 <label for="Parental_Involvement">Parental Involvement</label>
                 <select id="Parental_Involvement" name="Parental_Involvement">
                   <option value="Low">Low</option>
@@ -117,7 +174,7 @@
                 </select>
               </div>
 
-              <div class="field">
+              <div class="select-field">
                 <label for="Access_to_Resources">Access to Resources</label>
                 <select id="Access_to_Resources" name="Access_to_Resources">
                   <option value="Low">Low</option>
@@ -126,20 +183,7 @@
                 </select>
               </div>
 
-              <div class="field">
-                <label for="Extracurricular_Activities"
-                  >Extracurricular Activities</label
-                >
-                <select
-                  id="Extracurricular_Activities"
-                  name="Extracurricular_Activities"
-                >
-                  <option value="No" selected>No</option>
-                  <option value="Yes">Yes</option>
-                </select>
-              </div>
-
-              <div class="field">
+              <div class="select-field">
                 <label for="Motivation_Level">Motivation Level</label>
                 <select id="Motivation_Level" name="Motivation_Level">
                   <option value="Low">Low</option>
@@ -148,24 +192,7 @@
                 </select>
               </div>
 
-              <div class="field">
-                <label for="Internet_Access">Internet Access</label>
-                <select id="Internet_Access" name="Internet_Access">
-                  <option value="No" selected>No</option>
-                  <option value="Yes">Yes</option>
-                </select>
-              </div>
-
-              <div class="field">
-                <label for="Family_Income">Family Income</label>
-                <select id="Family_Income" name="Family_Income">
-                  <option value="Low">Low</option>
-                  <option value="Medium">Medium</option>
-                  <option value="High" selected>High</option>
-                </select>
-              </div>
-
-              <div class="field">
+              <div class="select-field">
                 <label for="Teacher_Quality">Teacher Quality</label>
                 <select id="Teacher_Quality" name="Teacher_Quality">
                   <option value="Low">Low</option>
@@ -174,32 +201,16 @@
                 </select>
               </div>
 
-              <div class="field">
-                <label for="School_Type">School Type</label>
-                <select id="School_Type" name="School_Type">
-                  <option value="Public">Public</option>
-                  <option value="Private" selected>Private</option>
+              <div class="select-field">
+                <label for="Family_Income">Family Income</label>
+                <select id="Family_Income" name="Family_Income">
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High" selected>High</option>
                 </select>
               </div>
 
-              <div class="field">
-                <label for="Peer_Influence">Peer Influence</label>
-                <select id="Peer_Influence" name="Peer_Influence">
-                  <option value="Negative" selected>Negative</option>
-                  <option value="Neutral">Neutral</option>
-                  <option value="Positive">Positive</option>
-                </select>
-              </div>
-
-              <div class="field">
-                <label for="Learning_Disabilities">Learning Disabilities</label>
-                <select id="Learning_Disabilities" name="Learning_Disabilities">
-                  <option value="No" selected>No</option>
-                  <option value="Yes">Yes</option>
-                </select>
-              </div>
-
-              <div class="field">
+              <div class="select-field">
                 <label for="Parental_Education_Level">Parental Education</label>
                 <select
                   id="Parental_Education_Level"
@@ -211,7 +222,16 @@
                 </select>
               </div>
 
-              <div class="field">
+              <div class="select-field">
+                <label for="Peer_Influence">Peer Influence</label>
+                <select id="Peer_Influence" name="Peer_Influence">
+                  <option value="Negative" selected>Negative</option>
+                  <option value="Neutral">Neutral</option>
+                  <option value="Positive">Positive</option>
+                </select>
+              </div>
+
+              <div class="select-field">
                 <label for="Distance_from_Home">Distance from Home</label>
                 <select id="Distance_from_Home" name="Distance_from_Home">
                   <option value="Near">Near</option>
@@ -220,7 +240,42 @@
                 </select>
               </div>
 
-              <div class="field">
+              <div class="select-field">
+                <label for="School_Type">School Type</label>
+                <select id="School_Type" name="School_Type">
+                  <option value="Public">Public</option>
+                  <option value="Private" selected>Private</option>
+                </select>
+              </div>
+
+              <div class="select-field">
+                <label for="Internet_Access">Internet Access</label>
+                <select id="Internet_Access" name="Internet_Access">
+                  <option value="No" selected>No</option>
+                  <option value="Yes">Yes</option>
+                </select>
+              </div>
+
+              <div class="select-field">
+                <label for="Extracurricular_Activities">Extracurriculars</label>
+                <select
+                  id="Extracurricular_Activities"
+                  name="Extracurricular_Activities"
+                >
+                  <option value="No" selected>No</option>
+                  <option value="Yes">Yes</option>
+                </select>
+              </div>
+
+              <div class="select-field">
+                <label for="Learning_Disabilities">Learning Disabilities</label>
+                <select id="Learning_Disabilities" name="Learning_Disabilities">
+                  <option value="No" selected>No</option>
+                  <option value="Yes">Yes</option>
+                </select>
+              </div>
+
+              <div class="select-field">
                 <label for="Gender">Gender</label>
                 <select id="Gender" name="Gender">
                   <option value="Female" selected>Female</option>
@@ -229,26 +284,67 @@
               </div>
             </div>
           </section>
-
-          <button type="submit" id="submitBtn" class="btn-primary">
-            Predict Exam Score
-          </button>
         </form>
 
-        <div id="resultCard" class="result-card hidden" aria-live="polite">
-          <span class="result-label">Estimated Final Exam Score</span>
-          <div class="result-score">
-            <span id="scoreValue">--</span> <small>/ 100</small>
-          </div>
-          <div class="progress-track">
-            <div id="scoreBar" class="progress-fill"></div>
-          </div>
-        </div>
-      </main>
+        <!-- RIGHT: Sticky Live Result Panel -->
+        <aside class="result-column">
+          <div class="glass-card result-panel">
+            <div class="result-header">
+              <span class="live-dot"></span>
+              <span>Predicted Outcome</span>
+            </div>
 
-      <footer class="footer">
-        Powered by Scikit-Learn RandomForestRegressor &amp; FastAPI
-      </footer>
+            <div class="gauge-wrapper">
+              <svg class="gauge-svg" viewBox="0 0 180 180">
+                <circle class="gauge-track" cx="90" cy="90" r="74" />
+                <circle
+                  id="gaugeProgress"
+                  class="gauge-fill"
+                  cx="90"
+                  cy="90"
+                  r="74"
+                />
+              </svg>
+              <div class="gauge-center">
+                <span id="scoreValue" class="score-number">--</span>
+                <span class="score-max">out of 100</span>
+              </div>
+            </div>
+
+            <div id="tierBadge" class="tier-badge tier-neutral">
+              Ready to Predict
+            </div>
+            <p id="insightText" class="insight-text">
+              Adjust any slider or click <strong>Predict Exam Score</strong> to
+              run the Random Forest model.
+            </p>
+
+            <button
+              type="submit"
+              form="predictForm"
+              id="submitBtn"
+              class="btn-predict"
+            >
+              ✨ Predict Exam Score
+            </button>
+
+            <div class="mini-stats">
+              <div class="stat-box">
+                <span class="stat-label">Study / Wk</span>
+                <strong id="summaryHours">20h</strong>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">Attendance</span>
+                <strong id="summaryAttendance">85%</strong>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">Prev Score</span>
+                <strong id="summaryPrev">70</strong>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
     </div>
 
     <script src="/script.js"></script>
